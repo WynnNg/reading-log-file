@@ -24,7 +24,6 @@ function App() {
 
       const result = Object.groupBy(ipList2, ({ id }) => id);
       const ipArr = Object.entries(result)
-      console.log("check fileContent", ipArr)
       setFileContent(ipArr)
     }
 
@@ -38,27 +37,31 @@ function App() {
           <input type='file' onChange={(e) => { handleOnChange(e) }} />
         </div>
         <h2>Thống kê</h2>
-        {fileContent && fileContent.map((item) => {
+        {fileContent && fileContent.map((item, ix) => {
           return (
             <>
-              <hr />
-              <h3>IP: {item[0]}</h3>
-              <p>Số lượng: {item[1].length}</p>
-              <table>
-                <tr>
-                  <th>Info</th>
-                </tr>
+              <div key={ix}>
+                <hr />
+                <h3>IP: {item[0]}</h3>
+                <p>Số lượng: {item[1].length}</p>
+                <table>
+                  <tr>
+                    <th>Info</th>
+                  </tr>
 
-                {item[1].map((i) => {
-                  return (
-                    <tr>
-                      <td>{i.info}</td>
-                    </tr>
-                  )
-                })}
-              </table>
+                  {item[1].map((i, index) => {
+                    const infoString = i.info?.toString();
+                    const infoArray = infoString?.split('"')
+                    return (
+                      <tr key={index}>
+                        <td>{infoArray?.map((a, i) => (<p key={i}>{a}</p>))}</td>
+                      </tr>
+                    )
+                  })}
+                </table>
 
-              <hr />
+                <hr />
+              </div>
             </>
           )
         })}
